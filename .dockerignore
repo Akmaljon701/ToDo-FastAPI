@@ -1,0 +1,15 @@
+# Python virtual environment
+venv/
+.venv/
+
+# PyCharm/IDEA project files
+.idea/
+
+# Byte-compiled Python files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary files and directories
+*.log
+*.sqlite3

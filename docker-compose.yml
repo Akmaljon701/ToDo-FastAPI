@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+      - redis_db
+    networks:
+      - todo_network
+
+  db:
+    container_name: db
+    image: postgres
+    environment:
+      POSTGRES_DB: todo_fast_api
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5431:5432"
+    networks:
+      - todo_network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  redis_db:
+    container_name: redis_db
+    image: redis
+    ports:
+      - "6378:6379"
+    networks:
+      - todo_network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  postgres_data:
+
+networks:
+  todo_network:
+    driver: bridge
