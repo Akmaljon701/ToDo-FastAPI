@@ -159,3 +159,4 @@ cython_debug/
 .idea/
 sql_app.db
 /__pycache__/
+.env
